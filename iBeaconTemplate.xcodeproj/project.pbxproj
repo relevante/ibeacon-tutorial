@@ -21,6 +21,7 @@
 		44DF2A9719377216001158B0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DF2A7919377216001158B0 /* UIKit.framework */; };
 		44DF2A9F19377216001158B0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 44DF2A9D19377216001158B0 /* InfoPlist.strings */; };
 		44DF2AA119377216001158B0 /* iBeaconTemplateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 44DF2AA019377216001158B0 /* iBeaconTemplateTests.m */; };
+		44DF2AAB193775D3001158B0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44DF2AAA193775D3001158B0 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		44DF2A9C19377216001158B0 /* iBeaconTemplateTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "iBeaconTemplateTests-Info.plist"; sourceTree = "<group>"; };
 		44DF2A9E19377216001158B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		44DF2AA019377216001158B0 /* iBeaconTemplateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iBeaconTemplateTests.m; sourceTree = "<group>"; };
+		44DF2AAA193775D3001158B0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44DF2AAB193775D3001158B0 /* CoreLocation.framework in Frameworks */,
 				44DF2A7819377216001158B0 /* CoreGraphics.framework in Frameworks */,
 				44DF2A7A19377216001158B0 /* UIKit.framework in Frameworks */,
 				44DF2A7619377216001158B0 /* Foundation.framework in Frameworks */,
@@ -101,6 +104,7 @@
 		44DF2A7419377216001158B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				44DF2AAA193775D3001158B0 /* CoreLocation.framework */,
 				44DF2A7519377216001158B0 /* Foundation.framework */,
 				44DF2A7719377216001158B0 /* CoreGraphics.framework */,
 				44DF2A7919377216001158B0 /* UIKit.framework */,
@@ -200,6 +204,13 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = iBeaconModules.us;
 				TargetAttributes = {
+					44DF2A7119377216001158B0 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
 					44DF2A9219377216001158B0 = {
 						TestTargetID = 44DF2A7119377216001158B0;
 					};
@@ -457,6 +468,7 @@
 				44DF2AA619377216001158B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		44DF2AA719377216001158B0 /* Build configuration list for PBXNativeTarget "iBeaconTemplateTests" */ = {
 			isa = XCConfigurationList;
@@ -465,6 +477,7 @@
 				44DF2AA919377216001158B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

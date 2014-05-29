@@ -7,13 +7,79 @@
 //
 
 #import "IMAppDelegate.h"
+#import <CoreLocation/CoreLocation.h>
 
 @implementation IMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSUUID *beaconUUID = [[NSUUID alloc] initWithUUIDString:@"8DEEFBB9-F738-4297-8040-96668BB44281"];
+    NSString *regionIdentifier = @"us.iBeaconModules";
+    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID identifier:regionIdentifier];
+
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    
+    [self.locationManager startMonitoringForRegion:beaconRegion];
+    [self.locationManager startRangingBeaconsInRegion:beaconRegion];
+    [self.locationManager startUpdatingLocation];
+    
     return YES;
+}
+
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
+    [manager startRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager startUpdatingLocation];
+    
+    NSLog(@"You entered the region.");
+    [self sendLocalNotificationWithMessage:@"You entered the region."];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
+    [manager stopRangingBeaconsInRegion:(CLBeaconRegion*)region];
+    [self.locationManager stopUpdatingLocation];
+    
+    NSLog(@"You exited the region.");
+    [self sendLocalNotificationWithMessage:@"You exited the region."];
+}
+
+-(void)sendLocalNotificationWithMessage:(NSString*)message {
+    UILocalNotification *notification = [[UILocalNotification alloc] init];
+    notification.alertBody = message;
+    [[UIApplication sharedApplication] scheduleLocalNotification:notification];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    if(beacons.count > 0) {
+        CLBeacon *nearestBeacon = beacons.firstObject;
+        if(nearestBeacon.proximity == self.lastProximity) {
+            return;
+        }
+        self.lastProximity = nearestBeacon.proximity;
+        
+        switch(nearestBeacon.proximity) {
+            case CLProximityFar:
+                NSLog(@"You are far away from the beacon");
+                [self sendLocalNotificationWithMessage:@"You are far away from the beacon"];
+                break;
+            case CLProximityNear:
+                NSLog(@"You are near the beacon");
+                [self sendLocalNotificationWithMessage:@"You are near the beacon"];
+                break;
+            case CLProximityImmediate:
+                NSLog(@"You are in the immediate proximity of the beacon");
+                [self sendLocalNotificationWithMessage:@"You are in the immediate proximity of the beacon"];
+                break;
+            case CLProximityUnknown:
+                NSLog(@"Where did the beacon go?");
+                [self sendLocalNotificationWithMessage:@"Where did the beacon go?"];
+                break;
+        }
+    } else {
+        NSLog(@"No beacons are nearby");
+        [self sendLocalNotificationWithMessage:@"No beacons are nearby"];
+    }
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
