@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IMViewController : UIViewController
+@interface IMViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property IBOutlet UITableView *tableView;
+@property (strong) NSArray *beacons;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "IMAppDelegate.h"
+#import "IMViewController.h"
 #import <CoreLocation/CoreLocation.h>
 
 @implementation IMAppDelegate
@@ -20,7 +21,7 @@
 
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    
+    self.locationManager.pausesLocationUpdatesAutomatically = NO;
     [self.locationManager startMonitoringForRegion:beaconRegion];
     [self.locationManager startRangingBeaconsInRegion:beaconRegion];
     [self.locationManager startUpdatingLocation];
@@ -51,6 +52,12 @@
 }
 
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
+    NSString *message = @"";
+    
+    IMViewController *viewController = (IMViewController*)self.window.rootViewController;
+    viewController.beacons = beacons;
+    [viewController.tableView reloadData];
+    
     if(beacons.count > 0) {
         CLBeacon *nearestBeacon = beacons.firstObject;
         if(nearestBeacon.proximity == self.lastProximity) {
@@ -60,28 +67,26 @@
         
         switch(nearestBeacon.proximity) {
             case CLProximityFar:
-                NSLog(@"You are far away from the beacon");
-                [self sendLocalNotificationWithMessage:@"You are far away from the beacon"];
+                message = @"You are far away from the beacon";
                 break;
             case CLProximityNear:
-                NSLog(@"You are near the beacon");
-                [self sendLocalNotificationWithMessage:@"You are near the beacon"];
+                message = @"You are near the beacon";
                 break;
             case CLProximityImmediate:
-                NSLog(@"You are in the immediate proximity of the beacon");
-                [self sendLocalNotificationWithMessage:@"You are in the immediate proximity of the beacon"];
+                message = @"You are in the immediate proximity of the beacon";
                 break;
             case CLProximityUnknown:
-                NSLog(@"Where did the beacon go?");
-                [self sendLocalNotificationWithMessage:@"Where did the beacon go?"];
+                message = @"Where did the beacon go?";
                 break;
         }
     } else {
-        NSLog(@"No beacons are nearby");
-        [self sendLocalNotificationWithMessage:@"No beacons are nearby"];
+        message = @"No beacons are nearby";
     }
+    
+    NSLog(@"%@", message);
+    [self sendLocalNotificationWithMessage:message];
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
