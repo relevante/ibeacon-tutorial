@@ -77,8 +77,7 @@
                 message = @"You are in the immediate proximity of the beacon";
                 break;
             case CLProximityUnknown:
-                message = @"Where did the beacon go?";
-                break;
+                return;
         }
     } else {
         message = @"No beacons are nearby";
