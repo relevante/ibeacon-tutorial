@@ -60,7 +60,8 @@
     
     if(beacons.count > 0) {
         CLBeacon *nearestBeacon = beacons.firstObject;
-        if(nearestBeacon.proximity == self.lastProximity) {
+        if(nearestBeacon.proximity == self.lastProximity ||
+           nearestBeacon.proximity == CLProximityUnknown) {
             return;
         }
         self.lastProximity = nearestBeacon.proximity;
