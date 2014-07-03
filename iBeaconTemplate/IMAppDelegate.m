@@ -19,7 +19,31 @@
     NSString *regionIdentifier = @"us.iBeaconModules";
     CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:beaconUUID identifier:regionIdentifier];
 
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusAuthorizedAlways:
+            NSLog(@"Authorized Always");
+            break;
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            NSLog(@"Authorized when in use");
+            break;
+        case kCLAuthorizationStatusDenied:
+            NSLog(@"Denied");
+            break;
+        case kCLAuthorizationStatusNotDetermined:
+            NSLog(@"Not determined");
+            break;
+        case kCLAuthorizationStatusRestricted:
+            NSLog(@"Restricted");
+            break;
+            
+        default:
+            break;
+    }
+    
     self.locationManager = [[CLLocationManager alloc] init];
+    if([self.locationManager respondsToSelector:@selector(requestAlwaysAuthorization)]) {
+        [self.locationManager requestAlwaysAuthorization];
+    }
     self.locationManager.delegate = self;
     self.locationManager.pausesLocationUpdatesAutomatically = NO;
     [self.locationManager startMonitoringForRegion:beaconRegion];
